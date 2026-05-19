@@ -40,6 +40,7 @@
     <define name="MODS_ALLOWED" if="desktop" />
     <define name="VIDEOS_ALLOWED" if="cpp" />
     <define name="DISCORD_ALLOWED" if="cpp"/>
+    <define name="FEATURE_SCREENSHOTS" if="desktop"/>
 
     <!-- _____________________________ Path Settings ____________________________ -->
 

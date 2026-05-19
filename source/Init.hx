@@ -71,6 +71,8 @@ class Init extends FlxState
 		funkin.utils.WindowUtil.initTracy();
 		#end
 		
+		funkin.backend.plugins.ScreenshotPlugin.initialize();
+		
 		funkin.scripting.PluginsManager.prepareSignals();
 		funkin.scripting.PluginsManager.populate();
 		

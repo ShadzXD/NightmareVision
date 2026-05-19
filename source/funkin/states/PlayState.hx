@@ -950,6 +950,7 @@ class PlayState extends MusicBeatState
 					if (combo > 9999) combo = 9999;
 					popUpScore(note);
 				}
+				if (note.isSustainNote) songScore += Scoring.
 			});
 			
 			inline function actualMiss()
