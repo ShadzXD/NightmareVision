@@ -78,9 +78,9 @@ class SustainSplash extends FunkinSprite implements funkin.game.modchart.IModNot
 		
 		data = note.noteData;
 		
-		visible = true;
+		visible = strum.visible;
 		angle = 0;
-		alpha = 1;
+		alpha = strum.alpha;
 		
 		this.player = field?.player ?? 0;
 		

@@ -219,6 +219,7 @@ class ModManager implements IFlxDestroyable
 		{
 			case 0:
 				x += FlxG.width * 0.5 - Note.swagWidth * (keys / 2) - 100;
+				if (ClientPrefs.middleScroll) x -= 313;
 			case 1:
 				x -= FlxG.width * 0.5 - Note.swagWidth * (keys / 2) - 100;
 		}
@@ -291,7 +292,8 @@ class ModManager implements IFlxDestroyable
 		{
 			for (name in activeMods[player])
 			{
-				if (exclusions != null && exclusions.contains(name)) continue; // because some modifiers may want the path without reverse, for example. (which is actually more common than you'd think!)
+				if (exclusions != null && exclusions.contains(name))
+					continue; // because some modifiers may want the path without reverse, for example. (which is actually more common than you'd think!)
 				var mod:Modifier = notemodRegister.get(name);
 				if (mod == null) continue;
 				if (!obj.active) continue;
