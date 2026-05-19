@@ -323,7 +323,7 @@ class StoryMenuState extends MusicBeatState
 					FlxG.sound.music.stop();
 				}
 				
-				FlxG.switchState(PlayState.new);
+				FlxG.switchState(LoadingState.new);
 				FreeplayState.destroyFreeplayVocals();
 			});
 		}
