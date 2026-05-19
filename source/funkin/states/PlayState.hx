@@ -47,6 +47,7 @@ import funkin.game.Countdown;
 import funkin.input.InputSystem;
 import funkin.input.InputEvent;
 import funkin.audio.SyncedFlxSoundGroup;
+import funkin.game.Scoring;
 #if VIDEOS_ALLOWED
 import funkin.video.FunkinVideoSprite;
 #end
@@ -960,7 +961,7 @@ class PlayState extends MusicBeatState
 				if (instakillOnMiss) doDeathCheck(true);
 				
 				songMisses++;
-				if (!practiceMode) songScore -= 10;
+				if (!practiceMode) songScore -= Scoring.missNoteScore();
 				
 				totalPlayed++;
 				RecalculateRating(true);
@@ -2632,7 +2633,7 @@ class PlayState extends MusicBeatState
 					FlxG.sound.music.stop();
 					
 					CoolUtil.cancelMusicFadeTween();
-					FlxG.switchState(PlayState.new);
+					FlxG.switchState(LoadingState.new);
 				}
 			}
 			else
@@ -2682,8 +2683,7 @@ class PlayState extends MusicBeatState
 		
 		// tryna do MS based judgment due to popular demand
 		var daRating:Rating = Rating.judgeNote(note, noteDiff / playbackRate);
-		var judgeScore:Int = daRating.score;
-		
+		var judgeScore:Int = Scoring.scoreNoteAccuracy(noteDiff);
 		totalNotesHit += daRating.ratingMod;
 		note.ratingMod = daRating.ratingMod;
 		if (!note.ratingDisabled) daRating.increase();
@@ -2840,7 +2840,7 @@ class PlayState extends MusicBeatState
 							if (instakillOnMiss) doDeathCheck(true);
 							
 							songMisses++;
-							if (!practiceMode) songScore -= 10;
+							if (!practiceMode) songScore -= Scoring.holdNoteScore();
 							
 							totalPlayed++;
 							RecalculateRating(true);

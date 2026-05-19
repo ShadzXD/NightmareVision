@@ -58,13 +58,15 @@ class Main extends Sprite
 		ClientPrefs.tryBindingSave('funkin');
 		
 		addChild(new funkin.backend.FunkinGame(startMeta.width, startMeta.height, Init, startMeta.fps, startMeta.fps, true, startMeta.startFullScreen));
-		
 		// prevent accept button when alt+enter is pressed
 		FlxG.stage.addEventListener(openfl.events.KeyboardEvent.KEY_DOWN, (e) -> {
 			if (e.keyCode == FlxKey.ENTER && e.altKey) e.stopImmediatePropagation();
+			if (e.keyCode == FlxKey.F3)
+			{
+				if (DebugDisplay.instance == null) DebugDisplay.init();
+				else DebugDisplay.instance.visible = !DebugDisplay.instance.visible;
+			}
 		}, false, 100);
-		
-		DebugDisplay.init();
 		
 		FlxG.signals.gameResized.add(onResize);
 		

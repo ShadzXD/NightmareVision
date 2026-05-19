@@ -111,4 +111,50 @@ class FileUtil
 		
 		return bytes;
 	}
+	
+	/**
+	 * Create a directory if it doesn't already exist.
+	 * Only works on native.
+	 *
+	 * @param dir The path to the directory.
+	 */
+	public static function createDirIfNotExists(dir:String):Void
+	{
+		if (!directoryExists(dir))
+		{
+			#if sys
+			sys.FileSystem.createDirectory(dir);
+			#else
+			throw 'Directory creation is not supported on this platform.';
+			#end
+		}
+	}
+	
+	public static function directoryExists(path:String):Bool
+	{
+		return FileSystem.exists(path) && FileSystem.isDirectory(path);
+	}
+	
+	/**
+	 * Write byte file contents directly to a given path.
+	 * Only works on native.
+	 *
+	 * @param path The path to the file.
+	 * @param data The bytes to write.
+	 * @param mode Whether to Force, Skip, or Ask to overwrite an existing file.
+	 */
+	public static function writeBytesToPath(path:String, data:Bytes,):Void
+	{
+		#if sys
+		if (directoryExists(path))
+		{
+			throw 'Target path is a directory, not a file: "$path"';
+		}
+		
+		createDirIfNotExists(Path.directory(path));
+		sys.io.File.saveBytes(path, data);
+		#else
+		throw 'Direct file writing by path is not supported on this platform.';
+		#end
+	}
 }
