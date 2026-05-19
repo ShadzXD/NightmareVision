@@ -589,7 +589,7 @@ class PlayState extends MusicBeatState
 	{
 		FlxG.sound.music?.stop();
 		
-		FunkinAssets.cache.clearStoredMemory();
+		// FunkinAssets.cache.clearStoredMemory();
 		
 		funkin.backend.DebugDisplay.addPlugin(() -> 'curStep: $curStep • curBeat: $curBeat • curSection: $curSection');
 		
@@ -826,14 +826,6 @@ class PlayState extends MusicBeatState
 		
 		RecalculateRating();
 		updateScoreBar();
-		
-		if (ClientPrefs.hitsoundVolume > 0) Paths.sound('hitsound');
-		Paths.sound('missnote1');
-		Paths.sound('missnote2');
-		Paths.sound('missnote3');
-		
-		if (PauseSubState.songName != null) Paths.music(PauseSubState.songName);
-		else Paths.music(Paths.sanitize('breakfast'));
 		
 		// Updating Discord Rich Presence.
 		resetDiscordRPC();

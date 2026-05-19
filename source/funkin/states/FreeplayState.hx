@@ -418,7 +418,7 @@ class FreeplayState extends MusicBeatState
 			}
 			else
 			{
-				FlxG.switchState(PlayState.new);
+				FlxG.switchState(LoadingState.new);
 			}
 			
 			if (FlxG.sound.music != null) FlxG.sound.music.volume = 0;
@@ -479,7 +479,8 @@ class FreeplayState extends MusicBeatState
 					});
 			}
 			
-			for (tab in tabs){
+			for (tab in tabs)
+			{
 				tab.directory = i.folder;
 				freeplayTabs.push(tab);
 			}
@@ -529,8 +530,8 @@ class FreeplayState extends MusicBeatState
 					addSong(name, [name, icon, color]);
 				}
 			}
-		} else 
-			Mods.currentModDirectory = tab.directory; 
+		}
+		else Mods.currentModDirectory = tab.directory;
 		for (song in tab.songs)
 			addSong(song);
 	}
