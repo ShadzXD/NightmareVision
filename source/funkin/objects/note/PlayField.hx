@@ -84,6 +84,7 @@ class PlayField extends FlxTypedContainer<StrumNote>
 	public var alpha(default, set):Float = 1;
 	
 	public var underlaySpr:FlxSprite;
+	public var underlayAlphaMult:Float = 1;
 	
 	public function set_alpha(value:Float)
 	{
@@ -205,7 +206,6 @@ class PlayField extends FlxTypedContainer<StrumNote>
 			final targetX = minX - UNDERLAY_PADDING;
 			final targetW = (maxX - minX) + (UNDERLAY_PADDING * 2);
 			
-			// Instant update
 			underlaySpr.x = targetX;
 			
 			underlaySpr.scale.x = targetW;
@@ -214,8 +214,7 @@ class PlayField extends FlxTypedContainer<StrumNote>
 			underlaySpr.updateHitbox();
 			
 			underlaySpr.camera = getDefaultCamera();
-			
-			underlaySpr.alpha = ClientPrefs.underlayOpacity;
+			underlaySpr.alpha = ClientPrefs.underlayOpacity * underlayAlphaMult;
 			
 			if (PlayState.instance.modManager != null) // temp
 			{
@@ -332,12 +331,11 @@ class PlayField extends FlxTypedContainer<StrumNote>
 			if (note != null && note.exists && note.alive) func(note);
 	}
 	
-	inline function disposeNote(note:Note):Void
+	public inline function disposeNote(note:Note):Void
 	{
-		removeNote(note);
-		
 		note.kill();
-		note.destroy();
+		
+		removeNote(note);
 	}
 	
 	public function noteHit(note:Note, field:PlayField):Void
@@ -411,6 +409,7 @@ class PlayField extends FlxTypedContainer<StrumNote>
 				final animToPlay = _skin.singAnimations[Std.int(Math.abs(note.noteData))] + daAlt;
 				
 				char.holdTimer = 0;
+				if (field.playerControls) char.holding = true;
 				
 				// ghost stuff
 				final chord = noteRows[field.ID][note.row];
@@ -463,10 +462,16 @@ class PlayField extends FlxTypedContainer<StrumNote>
 		
 		note.wasGoodHit = true;
 		
-		var ratingThing:funkin.game.Rating = funkin.game.Rating.judgeNote(note, Math.abs(note.strumTime - Conductor.songPosition + ClientPrefs.ratingOffset) / PlayState.instance?.playbackRate);
-		final splashCheck = (playerControls ? ratingThing.name == 'sick' || ratingThing.name == 'epic' : true);
+		var shouldSplash:Bool = true;
+		if (field.playerControls)
+		{
+			var ratingThing:funkin.game.Rating = funkin.game.Rating.judgeNote(note, Math.abs(note.strumTime - Conductor.songPosition + ClientPrefs.ratingOffset) / PlayState.instance?.playbackRate);
+			
+			shouldSplash = (ratingThing.name == 'sick' || ratingThing.name == 'epic');
+		}
 		
-		if (splashCheck) spawnSplash(note);
+		if (field.noteSplashes && shouldSplash) field.spawnSplash(note);
+		
 		spawnSusSplash(note, field.playerControls);
 		
 		final globalScript = PlayState.instance.callNoteTypeScript(note.noteType, 'hit', scriptArgs);
@@ -497,6 +502,7 @@ class PlayField extends FlxTypedContainer<StrumNote>
 					
 					var animToPlay:String = _skin.singAnimations[Std.int(Math.abs(note.noteData))] + 'miss' + daAlt;
 					char.playAnim(animToPlay, true);
+					char.holdTimer = 0;
 				}
 			}
 		}

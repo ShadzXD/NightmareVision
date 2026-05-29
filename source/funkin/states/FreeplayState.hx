@@ -408,8 +408,6 @@ class FreeplayState extends MusicBeatState
 				return;
 			}
 			
-			trace('CURRENT WEEK: ' + WeekData.getWeekFileName());
-			
 			FlxTween.cancelTweensOf(bg, ['color']);
 			
 			if (FlxG.keys.pressed.SHIFT)
